@@ -1,8 +1,16 @@
 import { useRouter } from 'next/router';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import Loading from '../../../components/loading';
 
-export default function ResultPage() {
+// export const getStaticProps = async () => {
+//   return {
+//     props: {
+//       veichileApi: process.env.NEXT_PUBLIC_API_URL
+//     }
+//   }
+// }
+
+function ResultPage() {
   const router = useRouter();
   const { makeId, year } = router.query;
   const [models, setModels] = useState([]);
@@ -44,6 +52,26 @@ export default function ResultPage() {
       ) : (
         <p className="text-red-500">No models found for the selected type and year.</p>
       )}
+
+      <button
+              className={`w-full max-w-md p-3 rounded-md text-white font-semibold transition-all duration-200 transform ${
+              
+                   'bg-blue-600 hover:bg-blue-700 hover:scale-105'
+                  
+              }`}
+              onClick={() => router.push('/')}
+            >
+              Back
+            </button>
     </div>
+  );
+}
+
+
+export default function ResultPageWrapper() {
+  return (
+    <Suspense fallback={<Loading />}>
+      <ResultPage />
+    </Suspense>
   );
 }
